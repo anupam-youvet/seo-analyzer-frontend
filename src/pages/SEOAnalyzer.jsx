@@ -10,7 +10,19 @@ import {
 } from "lucide-react";
 import Markdown from "react-markdown";
 // Markdown component will be handled with dangerouslySetInnerHTML for now
-
+const initialState = {
+  scrapedContent: "",
+  seoAnalysis: "",
+  seoAnalysisData: null, // Add this to store parsed SEO analysis
+  generatedContent: "",
+  loading: {
+    scraping: false,
+    analyzing: false,
+    generating: false,
+  },
+  metrics: null,
+  errors: {},
+};
 const SEOAnalyzer = () => {
   const [formData, setFormData] = useState({
     url: "",
@@ -21,19 +33,7 @@ const SEOAnalyzer = () => {
     temperature: 0.7,
   });
 
-  const [state, setState] = useState({
-    scrapedContent: "",
-    seoAnalysis: "",
-    seoAnalysisData: null, // Add this to store parsed SEO analysis
-    generatedContent: "",
-    loading: {
-      scraping: false,
-      analyzing: false,
-      generating: false,
-    },
-    metrics: null,
-    errors: {},
-  });
+  const [state, setState] = useState(initialState);
 
   const API_BASE_URL = import.meta.env.VITE_APP_API_URL;
 
@@ -375,9 +375,13 @@ const SEOAnalyzer = () => {
                   <input
                     type="url"
                     value={formData.url}
-                    onChange={(e) =>
-                      setFormData((prev) => ({ ...prev, url: e.target.value }))
-                    }
+                    onChange={(e) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        url: e.target.value,
+                      }));
+                      setState(initialState);
+                    }}
                     placeholder="https://www.example.com/your-smart-wifi-page"
                     className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
