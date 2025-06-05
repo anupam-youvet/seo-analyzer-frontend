@@ -9,11 +9,13 @@ import {
   AlertCircle,
 } from "lucide-react";
 import Markdown from "react-markdown";
+// Markdown component will be handled with dangerouslySetInnerHTML for now
+
 const SEOAnalyzer = () => {
   const [formData, setFormData] = useState({
     url: "",
     apiKey: "",
-    contentTopic: "Smart WiFi Technology and Its Benefits",
+    contentTopic: "",
     generationType: "FAQ",
     maxTokens: 1500,
     temperature: 0.7,
@@ -22,11 +24,12 @@ const SEOAnalyzer = () => {
   const [state, setState] = useState({
     scrapedContent: "",
     seoAnalysis: "",
+    seoAnalysisData: null, // Add this to store parsed SEO analysis
     generatedContent: "",
     loading: {
       scraping: false,
       analyzing: false,
-      generating: true,
+      generating: false,
     },
     metrics: null,
     errors: {},
@@ -123,9 +126,21 @@ const SEOAnalyzer = () => {
         throw new Error(data.error || "Failed to analyze SEO");
       }
 
+      // Parse the SEO analysis if it's a JSON string
+      let parsedAnalysis = null;
+      try {
+        parsedAnalysis =
+          typeof data.analysis === "string"
+            ? JSON.parse(data.analysis)
+            : data.analysis;
+      } catch (e) {
+        console.log("Analysis is not JSON, using as is");
+      }
+
       setState((prev) => ({
         ...prev,
         seoAnalysis: data.analysis,
+        seoAnalysisData: parsedAnalysis,
       }));
     } catch (error) {
       setError("analyze", error.message);
@@ -210,6 +225,20 @@ const SEOAnalyzer = () => {
       <div className="text-slate-400 text-sm font-medium">{label}</div>
     </div>
   );
+
+  // Get content topics from SEO analysis
+  const getContentTopics = () => {
+    if (
+      state.seoAnalysisData?.SEOAnalysis?.NewKeywordTargets?.ContentTopicsToAdd
+    ) {
+      return state.seoAnalysisData.SEOAnalysis.NewKeywordTargets
+        .ContentTopicsToAdd;
+    }
+    return [];
+  };
+
+  const contentTopics = getContentTopics();
+  const hasContentTopics = contentTopics.length > 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100">
@@ -462,22 +491,57 @@ const SEOAnalyzer = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                   <div className="md:col-span-3">
-                    <input
-                      type="text"
-                      value={formData.contentTopic}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          contentTopic: e.target.value,
-                        }))
-                      }
-                      placeholder="Content Topic"
-                      className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                    {hasContentTopics ? (
+                      <div>
+                        <select
+                          value={formData.contentTopic}
+                          onChange={(e) =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              contentTopic: e.target.value,
+                            }))
+                          }
+                          className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="" disabled>
+                            Select an option
+                          </option>
+                          {contentTopics.map((topic, index) => (
+                            <option
+                              key={index}
+                              value={topic}
+                              selected={index === 0}
+                            >
+                              {topic}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    ) : (
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">
+                          Content Topic
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.contentTopic}
+                          onChange={(e) =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              contentTopic: e.target.value,
+                            }))
+                          }
+                          placeholder="Content Topic"
+                          className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+                    )}
                   </div>
                   <button
                     onClick={handleGenerateContent}
-                    disabled={state.loading.generating}
+                    disabled={
+                      state.loading.generating || !formData.contentTopic
+                    }
                     className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl font-semibold text-white transition-all duration-300 hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {state.loading.generating ? (
@@ -501,7 +565,6 @@ const SEOAnalyzer = () => {
                       type="success"
                       message="✅ Content generated successfully! Ready to use."
                     />
-
                     <Markdown>{state.generatedContent}</Markdown>
                     {/* <textarea
                       value={state.generatedContent}
