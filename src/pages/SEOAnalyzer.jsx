@@ -9,7 +9,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import Markdown from "react-markdown";
-// Markdown component will be handled with dangerouslySetInnerHTML for now
+
 const initialState = {
   scrapedContent: "",
   seoAnalysis: "",
@@ -23,6 +23,12 @@ const initialState = {
   metrics: null,
   errors: {},
 };
+
+const smartWifiUrlOptions = [
+  "https://www.actcorp.in/blog/what-is-smart-wifi-and-how-it-works",
+  "https://www.actcorp.in/blog/is-it-worth-buying-smart-wifi-router",
+  "https://www.actcorp.in/blog/what-is-the-total-distance-covered-by-smart-wifi",
+];
 const SEOAnalyzer = () => {
   const [formData, setFormData] = useState({
     url: "",
@@ -246,7 +252,7 @@ const SEOAnalyzer = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
-            SEO Analyzer
+            SEO Analyser and Content Generator
           </h1>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto">
             Transform your content strategy with AI-powered SEO analysis and
@@ -366,7 +372,7 @@ const SEOAnalyzer = () => {
                 </div>
                 <h2 className="text-2xl font-bold text-blue-400 flex items-center gap-3">
                   <Globe className="w-6 h-6" />
-                  Website Content Extraction
+                  URL Content and Keyword and Extraction
                 </h2>
               </div>
 
@@ -585,7 +591,7 @@ const SEOAnalyzer = () => {
         {/* Footer */}
         <div className="text-center mt-16 pt-8 border-t border-slate-700">
           <div className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
-            🔥 Smart WiFi SEO Analyzer
+            🔥 SEO Analyser and Content Generator
           </div>
           <div className="text-slate-400">
             Powered by OpenAI GPT-4 • Built with React & Node.js • Made with ❤️
