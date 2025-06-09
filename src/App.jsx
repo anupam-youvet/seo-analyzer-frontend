@@ -1,5 +1,5 @@
 import SEOAnalyzer from "./pages/SEOAnalyzer";
-import UpdatedAnalyzer from "./pages/updatedSEOPage";
+import UpdatedAnalyzer from "./pages/UpdatedSEOPage";
 function App() {
   return (
     <>
