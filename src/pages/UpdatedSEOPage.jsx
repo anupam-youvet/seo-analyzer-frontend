@@ -47,9 +47,12 @@ const contentTypes = [
 const UpdatedAnalyzer = () => {
   // Sample URLs array
   const sampleUrls = [
+    "https://www.actcorp.in/wifipedia",
     "https://www.actcorp.in/blog/what-is-smart-wifi-and-how-it-works",
     "https://www.actcorp.in/blog/is-it-worth-buying-smart-wifi-router",
     "https://www.actcorp.in/blog/what-is-the-total-distance-covered-by-smart-wifi",
+    "https://www.actcorp.in/blog/exploring-uses-wifi-smart-homes",
+    "https://www.actcorp.in/blog/fast-wi-fi-connection-for-cricket-live-streaming",
   ];
   const API_BASE_URL = import.meta.env.VITE_APP_API_URL;
   const OPENAI_KEY = import.meta.env.VITE_APP_OPENAI_API_KEY;
