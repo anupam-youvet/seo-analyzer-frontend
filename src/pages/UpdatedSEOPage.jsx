@@ -37,6 +37,13 @@ const initialState = {
   selectedKeywords: [],
 };
 
+const contentTypes = [
+  "FAQ",
+  "Blog Post",
+  "Product Description",
+  "Landing Page Content",
+];
+
 const UpdatedAnalyzer = () => {
   // Sample URLs array
   const sampleUrls = [
@@ -324,14 +331,11 @@ const UpdatedAnalyzer = () => {
                       }
                       className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-slate-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     >
-                      <option value="FAQ">FAQ</option>
-                      <option value="Blog Post">Blog Post</option>
-                      <option value="Product Description">
-                        Product Description
-                      </option>
-                      <option value="Landing Page Content">
-                        Landing Page Content
-                      </option>
+                      {contentTypes.map((type, index) => (
+                        <option value={type} key={index}>
+                          {type}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
@@ -434,7 +438,7 @@ const UpdatedAnalyzer = () => {
                 <div className="bg-slate-800 rounded-3xl p-8 shadow-2xl border border-slate-700/50">
                   <h2 className="text-2xl font-bold text-purple-400 mb-6 flex items-center gap-3">
                     <Lightbulb className="w-6 h-6" />
-                    Select Suggest Keywords
+                    Select Suggested Keywords
                   </h2>
 
                   <div className="space-y-3">
@@ -642,7 +646,7 @@ const UpdatedAnalyzer = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
-            AI-Powered SEO Content Optimizer
+            SEO Analyser and Content generator
           </h1>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto">
             Transform your content strategy with intelligent SEO analysis and
@@ -954,7 +958,7 @@ const UpdatedAnalyzer = () => {
                         className="px-16 py-6 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 hover:from-purple-700 hover:via-pink-700 hover:to-red-700 rounded-3xl font-bold text-white text-2xl transition-all duration-300 hover:scale-105 shadow-2xl flex items-center gap-4"
                       >
                         <FileText className="w-8 h-8" />
-                        Generate Content
+                        Handover to Second Agent
                       </button>
                     </div>
                   </>
