@@ -118,7 +118,7 @@ const UpdatedAnalyzer = () => {
           characters: data.characterCount,
           words: data.wordCount,
           sentences: data.sentenceCount,
-          ranking: data.ranking || 70,
+          ranking: data.ranking || 3,
         },
       }));
     } catch (error) {
@@ -883,13 +883,13 @@ const UpdatedAnalyzer = () => {
                         <div className="bg-slate-700 rounded-2xl p-6">
                           <h3 className="text-lg font-bold text-purple-400 mb-4 flex items-center gap-2">
                             <Target className="w-5 h-5" />
-                            Suggested Improvements
+                            Suggested Changes
                           </h3>
 
                           {seoData.NewKeywordTargets?.SuggestedKeywords && (
                             <div className="mb-4">
                               <div className="font-medium text-white-300 mb-2">
-                                Keywords to Add
+                                Suggested Keywords
                               </div>
                               <div className="flex flex-wrap gap-2">
                                 {seoData.NewKeywordTargets.SuggestedKeywords.map(
@@ -909,7 +909,7 @@ const UpdatedAnalyzer = () => {
                           {seoData.NewKeywordTargets?.ContentTopicsToAdd && (
                             <div>
                               <div className="font-medium text-white-300 mb-2">
-                                Content Topics to Add
+                                Suggested Content Topics
                               </div>
                               <div className="space-y-2">
                                 {seoData.NewKeywordTargets.ContentTopicsToAdd.map(
