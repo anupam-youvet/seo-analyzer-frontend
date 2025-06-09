@@ -14,6 +14,7 @@ import {
   Eye,
   TrendingUp,
   Target,
+  Link,
   Lightbulb,
 } from "lucide-react";
 import Markdown from "react-markdown";
@@ -171,7 +172,7 @@ const UpdatedAnalyzer = () => {
 
   const handleGenerateContent = async () => {
     if (!formData.apiKey || !formData.contentTopic) {
-      setError("generate", "Please provide API key and content topic");
+      setError("generate", "Please select content topic");
       return;
     }
 
@@ -204,6 +205,7 @@ const UpdatedAnalyzer = () => {
       if (!response.ok) {
         throw new Error(data.error || "Failed to generate content");
       }
+      console.log("data", data);
 
       setState((prev) => ({
         ...prev,
@@ -272,6 +274,8 @@ const UpdatedAnalyzer = () => {
 
   const switchToGeneration = () => {
     setState((prev) => ({ ...prev, currentScreen: "generation" }));
+    // Scroll to top of the page
+    window.scrollTo(0, 0);
   };
 
   const switchToAnalysis = () => {
@@ -580,30 +584,27 @@ const UpdatedAnalyzer = () => {
 
                     {/* Generated Content Display */}
                     <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 mb-6 shadow-md">
-                      <article className="prose prose-invert prose-slate max-w-none text-slate-100 leading-relaxed dark:prose-invert">
+                      {/* <article className="prose prose-invert prose-slate max-w-none text-slate-100 leading-relaxed dark:prose-invert">
                         <Markdown
                           children={state?.generatedContent}
                           remarkPlugins={[remarkGfm]}
                           rehypePlugins={[rehypeRaw]}
                         />
-                      </article>
-                      {/* <div
+                      </article> */}
+                      <div
                         className="prose prose-invert max-w-none text-slate-100 leading-relaxed"
                         dangerouslySetInnerHTML={{
-                          __html: state.generatedContent.replace(
-                            /\n/g,
-                            "<br/>"
-                          ),
+                          __html: state.generatedContent,
                         }}
-                      /> */}
+                      />
                     </div>
 
                     {/* Action Buttons */}
                     <div className="flex flex-wrap gap-4 justify-center">
-                      <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold text-white transition-colors flex items-center gap-2">
+                      {/* <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold text-white transition-colors flex items-center gap-2">
                         <Download className="w-4 h-4" />
                         Download as DOC
-                      </button>
+                      </button> */}
                       <button className="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-xl font-semibold text-white transition-colors flex items-center gap-2">
                         <Send className="w-4 h-4" />
                         Send for Evaluation
@@ -615,6 +616,15 @@ const UpdatedAnalyzer = () => {
                       <button className="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-xl font-semibold text-white transition-colors flex items-center gap-2">
                         <Eye className="w-4 h-4" />
                         Publish
+                      </button>
+                      <button
+                        onClick={() => {
+                          setState(initialState);
+                        }}
+                        className="px-6 py-3 bg-orange-600 hover:bg-orange-700 rounded-xl font-semibold text-white transition-colors flex items-center gap-2"
+                      >
+                        <Link className="w-4 h-4" />
+                        Analyze New URL
                       </button>
                     </div>
                   </>
